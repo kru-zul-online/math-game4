@@ -188,7 +188,7 @@
    <footer class="bg-black/20 backdrop-blur-sm py-3 md:py-4 text-center text-white">
     <p class="text-xs md:text-sm">ออกแบบและพัฒนาโดย...</p>
     <p class="text-base md:text-lg font-bold">นายซูลกิฟลี ดอเลาะ</p>
-    <p class="text-xs md:text-sm">ครู โรงเรียนไทยรัฐวิทยา 52 (ชุมชนบ้านต้นไพร)</p>
+    <p class="text-xs md:text-sm">ครู โรงเรียนไทยรัฐวิทยา 52 (ชุมชนบ้านต้นไพ)</p>
     <p class="text-xs md:text-sm">สพป.ปัตตานี เขต 2</p>
    </footer>
   </div><!-- หน้าที่ 2: หน้าเล่นเกม -->
@@ -294,7 +294,7 @@
    <footer class="bg-black/20 backdrop-blur-sm py-3 md:py-4 text-center text-white">
     <p class="text-xs md:text-sm">ออกแบบและพัฒนาโดย...</p>
     <p class="text-base md:text-lg font-bold">นายซูลกิฟลี ดอเลาะ</p>
-    <p class="text-xs md:text-sm">ครู โรงเรียนไทยรัฐวิทยา 52 (ชุมชนบ้านต้นไพร)</p>
+    <p class="text-xs md:text-sm">ครู โรงเรียนไทยรัฐวิทยา 52 (ชุมชนบ้านต้นไพ)</p>
     <p class="text-xs md:text-sm">สพป.ปัตตานี เขต 2</p>
    </footer>
   </div>
@@ -551,10 +551,23 @@
       const container = document.getElementById('answers-container');
       container.innerHTML = '';
       
-      q.answers.forEach(answer => {
+      // Define 6 different gradient colors for buttons
+      const buttonColors = [
+        'linear-gradient(135deg, #60a5fa, #3b82f6)', // Blue
+        'linear-gradient(135deg, #a78bfa, #8b5cf6)', // Purple
+        'linear-gradient(135deg, #f472b6, #ec4899)', // Pink
+        'linear-gradient(135deg, #34d399, #10b981)', // Green
+        'linear-gradient(135deg, #fbbf24, #f59e0b)', // Yellow/Orange
+        'linear-gradient(135deg, #fb923c, #f97316)'  // Orange
+      ];
+      
+      // Shuffle colors for random assignment
+      const shuffledColors = buttonColors.sort(() => Math.random() - 0.5);
+      
+      q.answers.forEach((answer, index) => {
         const btn = document.createElement('button');
         btn.className = 'answer-btn aspect-square w-full text-5xl sm:text-6xl md:text-7xl font-extrabold rounded-lg md:rounded-xl btn-bounce flex items-center justify-center';
-        btn.style.background = 'linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6)';
+        btn.style.background = shuffledColors[index];
         btn.style.color = '#000000';
         btn.textContent = answer;
         btn.addEventListener('click', () => checkAnswer(answer, btn));
@@ -749,7 +762,7 @@
       // Format Thai date
       const now = new Date();
       const thaiMonths = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
-                          'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+                          'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจ��กายน', 'ธันวาคม'];
       const day = now.getDate();
       const month = thaiMonths[now.getMonth()];
       const year = now.getFullYear() + 543; // Convert to Buddhist year
@@ -959,5 +972,5 @@
     initDifficultyButtons();
     initTimeButtons();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bb507f2137587e5',t:'MTc2Nzk3MzIwNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bb516f4113187dc',t:'MTc2Nzk3MzgxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
