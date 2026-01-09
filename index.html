@@ -149,9 +149,7 @@
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
  <body class="h-full gradient-bg overflow-auto"><!-- หน้าที่ 1: หน้าหลัก -->
-  <div id="page-home" class="min-h-full flex flex-col"><!-- Sound Toggle Button --> <button id="sound-toggle-home" class="fixed top-4 right-4 z-50 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-lg rounded-full shadow-lg flex items-center justify-center hover:bg-white transition-all btn-bounce">
-    <svg id="sound-icon-home" class="w-5 h-5 md:w-6 md:h-6 text-purple-600" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-    </svg></button>
+  <div id="page-home" class="min-h-full flex flex-col">
    <div class="flex-1 flex items-center justify-center p-2 sm:p-4">
     <div class="bg-white/95 backdrop-blur-lg rounded-2xl md:rounded-3xl card-shadow p-4 sm:p-6 md:p-8 w-full max-w-lg"><!-- หัวข้อเกม -->
      <div class="text-center mb-4 md:mb-6">
@@ -163,7 +161,7 @@
       <p class="text-gray-500 mt-2 text-sm md:text-base">ฝึกทักษะการหารให้เก่งขึ้น!</p>
      </div><!-- ฟอร์มกรอกข้อมูล -->
      <div class="space-y-3 md:space-y-4">
-      <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="fullname">ชื่อ-นามสกุล</label> <input type="text" id="fullname" placeholder="นายซูลกิฟลี ดอเลาะ" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
+      <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="fullname">ชื่อ-นามสกุล</label> <input type="text" id="fullname" placeholder="ด.ช. ซูลกิฟลี  ดอเลาะ" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
       </div>
       <div class="grid grid-cols-2 gap-3 md:gap-4">
        <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="classroom">ชั้น</label> <input type="text" id="classroom" placeholder="ป.6/1" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
@@ -194,9 +192,7 @@
     <p class="text-xs md:text-sm">สพป.ปัตตานี เขต 2</p>
    </footer>
   </div><!-- หน้าที่ 2: หน้าเล่นเกม -->
-  <div id="page-game" class="min-h-full flex flex-col hidden"><!-- Sound Toggle Button --> <button id="sound-toggle-game" class="fixed top-4 right-4 z-50 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-lg rounded-full shadow-lg flex items-center justify-center hover:bg-white transition-all btn-bounce">
-    <svg id="sound-icon-game" class="w-5 h-5 md:w-6 md:h-6 text-purple-600" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-    </svg></button> <!-- Header Bar -->
+  <div id="page-game" class="min-h-full flex flex-col hidden"><!-- Header Bar -->
    <div class="bg-white/95 backdrop-blur-lg shadow-lg p-2 md:p-3">
     <div class="flex flex-wrap items-center justify-between gap-1.5 md:gap-2 text-xs md:text-base"><span class="bg-blue-100 text-blue-700 px-2 md:px-3 py-1 rounded-full font-medium"> 👤 <span id="display-name"></span> </span>
      <div class="flex items-center gap-1.5 md:gap-2"><span class="bg-purple-100 text-purple-700 px-2 md:px-3 py-1 rounded-full font-medium"> ชั้น <span id="display-class"></span> </span> <span class="bg-pink-100 text-pink-700 px-2 md:px-3 py-1 rounded-full font-medium"> เลขที่ <span id="display-number"></span> </span>
@@ -218,9 +214,9 @@
    </div><!-- โจทย์ -->
    <div class="flex-1 flex flex-col items-center justify-center p-2 sm:p-4">
     <div id="question-container" class="bg-white/95 backdrop-blur-lg rounded-xl md:rounded-2xl card-shadow p-3 sm:p-4 md:p-6 w-full max-w-md text-center">
-     <div class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-black mb-4 md:mb-6 whitespace-nowrap"><span id="dividend">24</span> ÷ <span id="divisor">4</span>
+     <div class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-black mb-4 md:mb-6 flex items-center justify-center gap-2 sm:gap-3 md:gap-4"><span id="dividend" class="min-w-[1.5em] text-center">24</span> <span class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">÷</span> <span id="divisor" class="min-w-[1.2em] text-center">4</span>
      </div><!-- ปุ่มคำตอบ -->
-     <div id="answers-container" class="grid grid-cols-3 gap-1.5 sm:gap-2 md:gap-3">
+     <div id="answers-container" class="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
      </div>
     </div><!-- ปุ่มยกเลิก --> <button id="cancel-btn" class="mt-3 md:mt-4 px-4 md:px-6 py-2 md:py-3 bg-gray-500 text-white rounded-lg md:rounded-xl font-semibold hover:bg-gray-600 transition-colors btn-bounce text-sm md:text-base"> ❌ ยกเลิกและกลับหน้าหลัก </button>
    </div>
@@ -234,18 +230,18 @@
    <div class="flex-1 overflow-auto p-2 sm:p-4">
     <div class="max-w-3xl mx-auto space-y-3 md:space-y-4"><!-- กรอบระดับความยาก -->
      <div class="bg-gradient-to-br from-white to-green-50 backdrop-blur-lg rounded-xl md:rounded-2xl p-3 md:p-5 card-shadow">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-       <div class="text-center bg-gradient-to-br from-blue-100 to-sky-100 px-3 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(59, 130, 246, 0.2);">
+      <div class="grid grid-cols-3 gap-2 md:gap-4">
+       <div class="text-center bg-gradient-to-br from-blue-100 to-sky-100 px-2 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(59, 130, 246, 0.2);">
         <p class="text-xs md:text-sm text-blue-700 font-bold">📅 วันที่เล่น</p>
-        <p id="result-date" class="text-sm md:text-base lg:text-lg font-extrabold text-blue-700"></p>
+        <p id="result-date" class="text-xs md:text-base lg:text-lg font-extrabold text-blue-700"></p>
        </div>
-       <div class="text-center bg-gradient-to-br from-green-100 to-emerald-100 px-3 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(34, 197, 94, 0.2);">
+       <div class="text-center bg-gradient-to-br from-green-100 to-emerald-100 px-2 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(34, 197, 94, 0.2);">
         <p class="text-xs md:text-sm text-green-700 font-bold">ระดับความยาก</p>
-        <p id="result-difficulty" class="text-sm md:text-base lg:text-lg font-extrabold text-green-700 break-words"></p>
+        <p id="result-difficulty" class="text-xs md:text-base lg:text-lg font-extrabold text-green-700 break-words"></p>
        </div>
-       <div class="text-center bg-gradient-to-br from-orange-100 to-amber-100 px-3 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(245, 158, 11, 0.2);">
+       <div class="text-center bg-gradient-to-br from-orange-100 to-amber-100 px-2 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(245, 158, 11, 0.2);">
         <p class="text-xs md:text-sm text-orange-700 font-bold">เวลาที่เลือก</p>
-        <p id="result-time" class="text-sm md:text-base lg:text-lg font-extrabold text-orange-700"></p>
+        <p id="result-time" class="text-xs md:text-base lg:text-lg font-extrabold text-orange-700"></p>
        </div>
       </div>
      </div><!-- กรอบสรุปคะแนน -->
@@ -421,7 +417,6 @@
     // Toggle sound function
     function toggleSound() {
       gameState.soundEnabled = !gameState.soundEnabled;
-      updateSoundIcons();
       
       // Play a sound if enabled to give feedback
       if (gameState.soundEnabled) {
@@ -429,22 +424,6 @@
       }
       
       vibrate(30);
-    }
-
-    // Update sound icon display
-    function updateSoundIcons() {
-      const iconHome = document.getElementById('sound-icon-home');
-      const iconGame = document.getElementById('sound-icon-game');
-      
-      if (gameState.soundEnabled) {
-        // Sound ON icon
-        iconHome.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-        iconGame.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-      } else {
-        // Sound OFF icon (muted)
-        iconHome.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
-        iconGame.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
-      }
     }
 
     // Initialize difficulty buttons
@@ -574,7 +553,7 @@
       
       q.answers.forEach(answer => {
         const btn = document.createElement('button');
-        btn.className = 'answer-btn py-6 sm:py-8 md:py-10 text-4xl sm:text-5xl md:text-6xl font-extrabold rounded-lg md:rounded-xl btn-bounce';
+        btn.className = 'answer-btn aspect-square w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold rounded-lg md:rounded-xl btn-bounce flex items-center justify-center';
         btn.style.background = 'linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6)';
         btn.style.color = '#000000';
         btn.textContent = answer;
@@ -946,11 +925,17 @@
       displayHistory('wrong');
     });
 
-    // Sound toggle buttons
-    document.getElementById('sound-toggle-home').addEventListener('click', toggleSound);
-    document.getElementById('sound-toggle-game').addEventListener('click', toggleSound);
+    // Initialize
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
 
-    // Element SDK
+    // Element SDK functions
     async function onConfigChange(newConfig) {
       config = { ...defaultConfig, ...newConfig };
       document.getElementById('game-title').textContent = config.game_title || defaultConfig.game_title;
@@ -971,19 +956,8 @@
       ]);
     }
 
-    // Initialize
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities,
-        mapToEditPanelValues
-      });
-    }
-
     initDifficultyButtons();
     initTimeButtons();
-    updateSoundIcons();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bb4935b75d087e8',t:'MTc2Nzk2ODQyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bb4cdf1c7160c8b',t:'MTc2Nzk3MDgyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
