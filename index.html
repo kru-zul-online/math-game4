@@ -166,7 +166,7 @@
       <div class="grid grid-cols-2 gap-3 md:gap-4">
        <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="classroom">ชั้น</label> <input type="text" id="classroom" placeholder="ป.6/1" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
        </div>
-       <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="number">เลขที่</label> <input type="number" id="number" placeholder="1" min="1" max="99" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
+       <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="number">���ลขที่</label> <input type="number" id="number" placeholder="1" min="1" max="99" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
        </div>
       </div><!-- เลือกระดับความยาก -->
       <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">เลือกระดับความยาก (เลือกได้หลายตัว)</label>
@@ -214,7 +214,7 @@
    </div><!-- โจทย์ -->
    <div class="flex-1 flex flex-col items-center justify-center p-2 sm:p-4">
     <div id="question-container" class="bg-white/95 backdrop-blur-lg rounded-xl md:rounded-2xl card-shadow p-3 sm:p-4 md:p-6 w-full max-w-md text-center">
-     <div class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-black mb-4 md:mb-6 flex items-center justify-center gap-2 sm:gap-3 md:gap-4"><span id="dividend" class="min-w-[1.5em] text-center">24</span> <span class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl">÷</span> <span id="divisor" class="min-w-[1.2em] text-center">4</span>
+     <div class="text-7xl sm:text-8xl md:text-9xl font-bold text-black mb-4 md:mb-6 flex items-center justify-center gap-3 sm:gap-4 md:gap-5"><span id="dividend" class="min-w-[1.5em] text-center">24</span> <span class="text-6xl sm:text-7xl md:text-8xl">÷</span> <span id="divisor" class="min-w-[1.2em] text-center">4</span>
      </div><!-- ปุ่มคำตอบ -->
      <div id="answers-container" class="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4">
      </div>
@@ -240,7 +240,7 @@
         <p id="result-difficulty" class="text-xs md:text-base lg:text-lg font-extrabold text-green-700 break-words"></p>
        </div>
        <div class="text-center bg-gradient-to-br from-orange-100 to-amber-100 px-2 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(245, 158, 11, 0.2);">
-        <p class="text-xs md:text-sm text-orange-700 font-bold">เวลาที่เลือก</p>
+        <p class="text-xs md:text-sm text-orange-700 font-bold">เวลาที่��ลือก</p>
         <p id="result-time" class="text-xs md:text-base lg:text-lg font-extrabold text-orange-700"></p>
        </div>
       </div>
@@ -276,7 +276,7 @@
         <thead class="bg-purple-100">
          <tr>
           <th class="p-1.5 md:p-2 text-left">ข้อ</th>
-          <th class="p-1.5 md:p-2 text-left">โจทย์และเฉลย</th>
+          <th class="p-1.5 md:p-2 text-left">โ���ทย์และเฉลย</th>
           <th class="p-1.5 md:p-2 text-center">ตอบ</th>
           <th class="p-1.5 md:p-2 text-center">ผล</th>
          </tr>
@@ -287,7 +287,7 @@
       </div>
       <p class="text-center text-orange-600 font-medium mt-3 md:mt-4 bg-orange-50 p-2 md:p-3 rounded-lg md:rounded-xl text-xs md:text-sm">📸 กรุณาแคปเจอร์หน้าจอเพื่อส่งคะแนน</p>
      </div><!-- ปุ่มกลับ -->
-     <div class="flex justify-center pb-2"><button id="home-btn" class="px-6 md:px-10 py-3 md:py-5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white text-base md:text-xl rounded-xl md:rounded-2xl font-bold hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-colors btn-bounce"> 🏠 กลับหน้าหลัก / เล่นอีกครั้ง </button>
+     <div class="flex justify-center pb-2"><button id="home-btn" class="px-6 md:px-10 py-3 md:py-5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white text-base md:text-xl rounded-xl md:rounded-2xl font-bold hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-colors btn-bounce"> 🏠 กลับหน้าหลัก / เล่นอ��กครั้ง </button>
      </div>
     </div>
    </div><!-- Footer -->
@@ -553,7 +553,7 @@
       
       q.answers.forEach(answer => {
         const btn = document.createElement('button');
-        btn.className = 'answer-btn aspect-square w-full text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold rounded-lg md:rounded-xl btn-bounce flex items-center justify-center';
+        btn.className = 'answer-btn aspect-square w-full text-5xl sm:text-6xl md:text-7xl font-extrabold rounded-lg md:rounded-xl btn-bounce flex items-center justify-center';
         btn.style.background = 'linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6)';
         btn.style.color = '#000000';
         btn.textContent = answer;
@@ -959,5 +959,5 @@
     initDifficultyButtons();
     initTimeButtons();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bb4cdf1c7160c8b',t:'MTc2Nzk3MDgyOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bb4e29152be87e2',t:'MTc2Nzk3MTY3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
