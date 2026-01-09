@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="th" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกมการหาร</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    
+    .card-shadow {
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    .btn-bounce:active {
+      transform: scale(0.95);
+    }
+    
+    .shake {
+      animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    
+    .shake-timebar {
+      animation: shakeTimebar 0.3s ease-in-out infinite;
+    }
+    
+    @keyframes shakeTimebar {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      75% { transform: translateX(3px); }
+    }
+    
+    .correct-flash {
+      animation: correctFlash 0.5s ease-in-out;
+    }
+    
+    @keyframes correctFlash {
+      0%, 100% { background-color: inherit; }
+      50% { background-color: #10b981; }
+    }
+    
+    .wrong-flash {
+      animation: wrongFlash 0.5s ease-in-out;
+    }
+    
+    @keyframes wrongFlash {
+      0%, 100% { background-color: inherit; }
+      50% { background-color: #ef4444; }
+    }
+    
+    .pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+    
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+      50% { box-shadow: 0 0 40px rgba(102, 126, 234, 0.8); }
+    }
+    
+    .difficulty-btn.selected {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      transform: scale(1.05);
+    }
+    
+    .time-btn.selected {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      transform: scale(1.05);
+    }
+    
+    .progress-bar {
+      transition: width 0.1s linear;
+    }
+    
+    .answer-btn {
+      transition: all 0.2s ease;
+    }
+    
+    .answer-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      animation: confetti-fall 3s linear forwards;
+    }
+    
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    
+    .shake-input {
+      animation: shakeInput 0.5s ease-in-out;
+      border-color: #ef4444 !important;
+    }
+    
+    @keyframes shakeInput {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .animate-bounce-in {
+      animation: bounceIn 0.3s ease-out;
+    }
+    
+    @keyframes bounceIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full gradient-bg overflow-auto"><!-- หน้าที่ 1: หน้าหลัก -->
+  <div id="page-home" class="min-h-full flex flex-col">
+   <div class="flex-1 flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white/95 backdrop-blur-lg rounded-2xl md:rounded-3xl card-shadow p-4 sm:p-6 md:p-8 w-full max-w-lg"><!-- หัวข้อเกม -->
+     <div class="text-center mb-4 md:mb-6">
+      <div class="inline-block p-3 md:p-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl md:rounded-2xl mb-3 md:mb-4 floating">
+       <svg class="w-12 h-12 md:w-16 md:h-16 text-white" fill="currentColor" viewbox="0 0 24 24"><circle cx="12" cy="6" r="2" /> <rect x="4" y="11" width="16" height="2" rx="1" /> <circle cx="12" cy="18" r="2" />
+       </svg>
+      </div>
+      <h1 id="game-title" class="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">เกมการหาร</h1>
+      <p class="text-gray-500 mt-2 text-sm md:text-base">ฝึกทักษะการหารให้เก่งขึ้น!</p>
+     </div><!-- ฟอร์มกรอกข้อมูล -->
+     <div class="space-y-3 md:space-y-4">
+      <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="fullname">ชื่อ-นามสกุล</label> <input type="text" id="fullname" placeholder="ด.ช. ซูลกิฟลี ดอเลาะ" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
+      </div>
+      <div class="grid grid-cols-2 gap-3 md:gap-4">
+       <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="classroom">ชั้น</label> <input type="text" id="classroom" placeholder="ป.6/1" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
+       </div>
+       <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1" for="number">เลขที่</label> <input type="number" id="number" placeholder="1" min="1" max="99" class="w-full px-3 md:px-4 py-2 md:py-3 border-2 border-purple-200 rounded-lg md:rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-base md:text-lg">
+       </div>
+      </div><!-- เลือกระดับความยาก -->
+      <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">เลือกระดับความยาก (เลือกได้หลายตัว)</label>
+       <div class="mb-2"><button id="random-all-btn" class="w-full px-3 md:px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all btn-bounce text-sm md:text-base"> 🎲 สุ่มทั้งหมด </button>
+       </div>
+       <div id="difficulty-container" class="grid grid-cols-4 md:grid-cols-6 gap-1.5 md:gap-2">
+       </div>
+      </div><!-- เลือกเวลา -->
+      <div><label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">เลือกเวลา (วินาที)</label>
+       <div id="time-container" class="grid grid-cols-4 gap-1.5 md:gap-2">
+       </div>
+      </div><!-- ข้อความแจ้งเตือน -->
+      <div id="error-message" class="hidden text-red-500 text-center font-medium bg-red-50 p-2 md:p-3 rounded-lg md:rounded-xl text-xs md:text-sm">
+       กรุณากรอกข้อมูลให้ครบถ้วน
+      </div><!-- ปุ่มเริ่มเกม --> <button id="start-btn" class="w-full py-3 md:py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-lg md:text-xl font-bold rounded-lg md:rounded-xl btn-bounce hover:from-purple-700 hover:to-pink-700 transition-all pulse-glow"> 🎮 เริ่มเกม! </button>
+     </div>
+    </div>
+   </div><!-- Footer -->
+   <footer class="bg-black/20 backdrop-blur-sm py-3 md:py-4 text-center text-white">
+    <p class="text-xs md:text-sm">ออกแบบและพัฒนาโดย...</p>
+    <p class="text-base md:text-lg font-bold">นายซูลกิฟลี ดอเลาะ</p>
+    <p class="text-xs md:text-sm">ครู โรงเรียนไทยรัฐวิทยา 52 (ชุมชนบ้านต้นไพ)</p>
+    <p class="text-xs md:text-sm">สพป.ปัตตานี เขต 2</p>
+   </footer>
+  </div><!-- หน้าที่ 2: หน้าเล่นเกม -->
+  <div id="page-game" class="min-h-full flex flex-col hidden"><!-- Header Bar -->
+   <div class="bg-white/95 backdrop-blur-lg shadow-lg p-2 md:p-3">
+    <div class="flex flex-wrap items-center justify-between gap-1.5 md:gap-2 text-xs md:text-base"><span class="bg-blue-100 text-blue-700 px-2 md:px-3 py-1 rounded-full font-medium"> 👤 <span id="display-name"></span> </span>
+     <div class="flex items-center gap-1.5 md:gap-2"><span class="bg-purple-100 text-purple-700 px-2 md:px-3 py-1 rounded-full font-medium"> ชั้น <span id="display-class"></span> </span> <span class="bg-pink-100 text-pink-700 px-2 md:px-3 py-1 rounded-full font-medium"> เลขที่ <span id="display-number"></span> </span>
+     </div>
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-1.5 md:gap-2 mt-2 text-xs"><span class="bg-green-100 text-green-700 px-2 md:px-3 py-1 rounded-full"> หา���: <span id="display-difficulty" class="font-semibold"></span> </span> <span class="bg-orange-100 text-orange-700 px-2 md:px-3 py-1 rounded-full"> เวลา: <span id="display-time" class="font-semibold"></span> วินาที </span>
+    </div>
+   </div><!-- แถบเวลา -->
+   <div class="bg-white/80 p-2 md:p-3">
+    <div class="h-4 md:h-6 bg-gray-200 rounded-full overflow-hidden">
+     <div id="time-bar" class="h-full bg-gradient-to-r from-green-400 to-emerald-500 progress-bar rounded-full" style="width: 100%"></div>
+    </div>
+    <div class="flex justify-between mt-1">
+     <div class="flex items-center gap-1 md:gap-2"><span class="text-xs md:text-sm text-gray-600">⏰ เวลาที่เหลือ</span> <span id="time-left" class="text-base md:text-lg font-bold text-gray-700">60</span> <span class="text-xs md:text-sm text-gray-600">วินาที</span>
+     </div>
+     <div class="flex gap-2 md:gap-4 text-xs md:text-sm"><span class="text-gray-600">ทำ: <span id="total-answered" class="font-bold text-purple-600">0</span></span> <span class="text-gray-600">ถูก: <span id="correct-count" class="font-bold text-green-600">0</span></span> <span class="text-gray-600">ผิด: <span id="wrong-count" class="font-bold text-red-600">0</span></span>
+     </div>
+    </div>
+   </div><!-- โจทย์ -->
+   <div class="flex-1 flex flex-col items-center justify-center p-2 sm:p-4">
+    <div id="question-container" class="bg-white/95 backdrop-blur-lg rounded-2xl md:rounded-3xl card-shadow p-4 sm:p-6 md:p-8 w-full max-w-md text-center">
+     <div class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-4 md:mb-6"><span id="dividend">24</span> ÷ <span id="divisor">4</span>
+     </div><!-- ปุ่มคำตอบ -->
+     <div id="answers-container" class="grid grid-cols-3 gap-2 md:gap-3">
+     </div>
+    </div><!-- ปุ่มยกเลิก --> <button id="cancel-btn" class="mt-4 md:mt-6 px-4 md:px-6 py-2 md:py-3 bg-gray-500 text-white rounded-lg md:rounded-xl font-semibold hover:bg-gray-600 transition-colors btn-bounce text-sm md:text-base"> ❌ ยกเลิกและกลับหน้าหลัก </button>
+   </div>
+  </div><!-- หน้าที่ 3: สรุปคะแนน -->
+  <div id="page-result" class="min-h-full flex flex-col hidden"><!-- Header Bar -->
+   <div class="bg-white/95 backdrop-blur-lg shadow-lg p-3 md:p-4">
+    <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-center text-purple-700 mb-2 md:mb-3">🏆 สรุปคะแนน</h2>
+    <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3 text-xs md:text-base"><span class="bg-blue-100 text-blue-700 px-2 md:px-3 py-1 rounded-full font-medium">👤 <span id="result-name"></span></span> <span class="bg-purple-100 text-purple-700 px-2 md:px-3 py-1 rounded-full font-medium">ชั้น <span id="result-class"></span></span> <span class="bg-pink-100 text-pink-700 px-2 md:px-3 py-1 rounded-full font-medium">เลขที่ <span id="result-number"></span></span>
+    </div>
+   </div>
+   <div class="flex-1 overflow-auto p-2 sm:p-4">
+    <div class="max-w-3xl mx-auto space-y-3 md:space-y-4"><!-- กรอบระดับความยาก -->
+     <div class="bg-gradient-to-br from-white to-green-50 backdrop-blur-lg rounded-xl md:rounded-2xl p-3 md:p-5 card-shadow">
+      <div class="flex flex-wrap justify-center gap-2 md:gap-4 lg:gap-6">
+       <div class="text-center bg-gradient-to-br from-blue-100 to-sky-100 px-3 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(59, 130, 246, 0.2);">
+        <p class="text-xs md:text-sm text-blue-700 font-bold">📅 วันที่เล่น</p>
+        <p id="result-date" class="text-sm md:text-base lg:text-lg font-extrabold text-blue-700"></p>
+       </div>
+       <div class="text-center bg-gradient-to-br from-green-100 to-emerald-100 px-3 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(34, 197, 94, 0.2);">
+        <p class="text-xs md:text-sm text-green-700 font-bold">ระดับความยาก</p>
+        <p id="result-difficulty" class="text-sm md:text-base lg:text-lg font-extrabold text-green-700"></p>
+       </div>
+       <div class="text-center bg-gradient-to-br from-orange-100 to-amber-100 px-3 md:px-6 py-2 md:py-3 rounded-xl md:rounded-2xl" style="box-shadow: 0 4px 0 rgba(245, 158, 11, 0.2);">
+        <p class="text-xs md:text-sm text-orange-700 font-bold">เวลาที่เลือก</p>
+        <p id="result-time" class="text-sm md:text-base lg:text-lg font-extrabold text-orange-700"></p>
+       </div>
+      </div>
+     </div><!-- กรอบสรุปคะแนน -->
+     <div class="bg-gradient-to-br from-white to-purple-50 backdrop-blur-lg rounded-2xl md:rounded-3xl p-4 md:p-6 card-shadow">
+      <div class="grid grid-cols-4 gap-2 md:gap-3 text-center">
+       <div class="bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl md:rounded-2xl p-2 md:p-4" style="box-shadow: 0 6px 0 rgba(147, 51, 234, 0.2), 0 3px 10px rgba(147, 51, 234, 0.15);">
+        <p class="text-xs md:text-sm text-purple-700 mb-1 md:mb-2 font-bold">📝 ทำทั้งหมด</p>
+        <p class="text-xl sm:text-2xl md:text-4xl font-extrabold text-purple-700" id="result-total">0</p>
+       </div>
+       <div class="bg-gradient-to-br from-green-100 to-green-200 rounded-xl md:rounded-2xl p-2 md:p-4" style="box-shadow: 0 6px 0 rgba(34, 197, 94, 0.2), 0 3px 10px rgba(34, 197, 94, 0.15);">
+        <p class="text-xs md:text-sm text-green-700 mb-1 md:mb-2 font-bold">✅ ถูก</p>
+        <p class="text-xl sm:text-2xl md:text-4xl font-extrabold text-green-700" id="result-correct">0</p>
+       </div>
+       <div class="bg-gradient-to-br from-red-100 to-red-200 rounded-xl md:rounded-2xl p-2 md:p-4" style="box-shadow: 0 6px 0 rgba(239, 68, 68, 0.2), 0 3px 10px rgba(239, 68, 68, 0.15);">
+        <p class="text-xs md:text-sm text-red-700 mb-1 md:mb-2 font-bold">❌ ผิด</p>
+        <p class="text-xl sm:text-2xl md:text-4xl font-extrabold text-red-700" id="result-wrong">0</p>
+       </div>
+       <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl md:rounded-2xl p-2 md:p-4" style="box-shadow: 0 6px 0 rgba(59, 130, 246, 0.2), 0 3px 10px rgba(59, 130, 246, 0.15);">
+        <p class="text-xs md:text-sm text-blue-700 mb-1 md:mb-2 font-bold">🎯 ความแ��่นยำ</p>
+        <p class="text-xl sm:text-2xl md:text-4xl font-extrabold text-blue-700" id="result-percentage">0%</p>
+       </div>
+      </div>
+     </div><!-- ตารางประวัติ -->
+     <div class="bg-gradient-to-br from-white to-indigo-50 backdrop-blur-lg rounded-xl md:rounded-2xl p-3 md:p-5 card-shadow">
+      <div class="flex justify-between items-center mb-3 md:mb-4 flex-wrap gap-2">
+       <h3 class="text-base md:text-xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">📋 ประวัติการตอบ</h3>
+       <div class="flex gap-1.5 md:gap-2"><button id="filter-all" class="px-2 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce">ทั้งหมด</button> <button id="filter-correct" class="px-2 md:px-4 py-1.5 md:py-2 bg-gray-200 text-gray-700 rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce hover:bg-gray-300">✓ ถูก</button> <button id="filter-wrong" class="px-2 md:px-4 py-1.5 md:py-2 bg-gray-200 text-gray-700 rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce hover:bg-gray-300">✗ ผิด</button>
+       </div>
+      </div>
+      <div class="overflow-x-auto">
+       <table class="w-full text-xs md:text-sm">
+        <thead class="bg-purple-100">
+         <tr>
+          <th class="p-1.5 md:p-2 text-left">ข้อ</th>
+          <th class="p-1.5 md:p-2 text-left">โจทย์และเฉลย</th>
+          <th class="p-1.5 md:p-2 text-center">ตอบ</th>
+          <th class="p-1.5 md:p-2 text-center">ผล</th>
+         </tr>
+        </thead>
+        <tbody id="history-table">
+        </tbody>
+       </table>
+      </div>
+      <p class="text-center text-orange-600 font-medium mt-3 md:mt-4 bg-orange-50 p-2 md:p-3 rounded-lg md:rounded-xl text-xs md:text-sm">📸 กรุณาแคปเจอร์หน้าจอเพื่อส่งคะแนน</p>
+     </div><!-- ปุ่มกลับ -->
+     <div class="flex justify-center pb-2"><button id="home-btn" class="px-6 md:px-10 py-3 md:py-5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white text-base md:text-xl rounded-xl md:rounded-2xl font-bold hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-colors btn-bounce"> 🏠 กลับหน้าหลัก / เล่นอีกครั้ง </button>
+     </div>
+    </div>
+   </div><!-- Footer -->
+   <footer class="bg-black/20 backdrop-blur-sm py-3 md:py-4 text-center text-white">
+    <p class="text-xs md:text-sm">ออกแบบและพัฒนาโดย...</p>
+    <p class="text-base md:text-lg font-bold">นายซูลกิฟลี ดอเลาะ</p>
+    <p class="text-xs md:text-sm">ครู โรงเรียนไทยรัฐวิทยา 52 (ชุมชนบ้านต้นไพ)</p>
+    <p class="text-xs md:text-sm">สพป.ปัตตานี เขต 2</p>
+   </footer>
+  </div>
+  <script>
+    // Default config
+    const defaultConfig = {
+      game_title: 'เกมการหาร'
+    };
+    
+    let config = { ...defaultConfig };
+
+    // Game state
+    let gameState = {
+      fullname: '',
+      classroom: '',
+      number: '',
+      selectedDivisors: [],
+      selectedTime: 60,
+      timeLeft: 60,
+      totalAnswered: 0,
+      correctCount: 0,
+      wrongCount: 0,
+      history: [],
+      currentQuestion: null,
+      timer: null
+    };
+
+    // Audio context for sounds
+    let audioContext = null;
+
+    function initAudio() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playSound(type) {
+      try {
+        initAudio();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        if (type === 'correct') {
+          oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+          oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialDecayTo && gainNode.gain.exponentialDecayTo(0.01, audioContext.currentTime + 0.4);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.4);
+        } else if (type === 'wrong') {
+          oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.3);
+        } else if (type === 'click') {
+          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.05);
+        } else if (type === 'end') {
+          oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(300, audioContext.currentTime + 0.2);
+          oscillator.frequency.setValueAtTime(200, audioContext.currentTime + 0.4);
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.6);
+        } else if (type === 'warning') {
+          oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(440, audioContext.currentTime + 0.15);
+          gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.3);
+        }
+      } catch (e) {
+        // Audio not supported
+      }
+    }
+
+    function vibrate(duration) {
+      try {
+        if (navigator.vibrate) {
+          navigator.vibrate(duration);
+        }
+      } catch (e) {
+        // Vibration not supported
+      }
+    }
+
+    function playClockTick() {
+      try {
+        initAudio();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Clock tick sound: quick high pitch
+        oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+        
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.1);
+      } catch (e) {
+        // Audio not supported
+      }
+    }
+
+    // Initialize difficulty buttons
+    function initDifficultyButtons() {
+      const container = document.getElementById('difficulty-container');
+      container.innerHTML = '';
+      for (let i = 2; i <= 12; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'difficulty-btn px-2 md:px-4 py-2 md:py-3 bg-gradient-to-br from-white to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-lg md:rounded-xl font-bold text-gray-700 transition-all btn-bounce border-2 border-gray-200 text-sm md:text-base';
+        btn.textContent = `÷${i}`;
+        btn.dataset.divisor = i;
+        btn.addEventListener('click', () => {
+          playSound('click');
+          vibrate(30);
+          btn.classList.toggle('selected');
+          const divisor = parseInt(btn.dataset.divisor);
+          if (gameState.selectedDivisors.includes(divisor)) {
+            gameState.selectedDivisors = gameState.selectedDivisors.filter(d => d !== divisor);
+          } else {
+            gameState.selectedDivisors.push(divisor);
+          }
+        });
+        container.appendChild(btn);
+      }
+    }
+
+    // Random all divisors
+    function randomAllDivisors() {
+      playSound('click');
+      vibrate(50);
+      
+      // Clear all selections
+      gameState.selectedDivisors = [];
+      document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      
+      // Select random number of divisors (between 3 and 11)
+      const numToSelect = Math.floor(Math.random() * 9) + 3;
+      const allDivisors = Array.from({length: 11}, (_, i) => i + 2);
+      
+      // Shuffle and select
+      const shuffled = allDivisors.sort(() => Math.random() - 0.5);
+      const selected = shuffled.slice(0, numToSelect);
+      
+      gameState.selectedDivisors = selected;
+      
+      // Update UI
+      document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        const divisor = parseInt(btn.dataset.divisor);
+        if (selected.includes(divisor)) {
+          btn.classList.add('selected');
+        }
+      });
+    }
+
+    // Initialize time buttons
+    function initTimeButtons() {
+      const container = document.getElementById('time-container');
+      const times = [30, 60, 90, 120, 180, 240, 300, 600];
+      container.innerHTML = '';
+      times.forEach((time, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'time-btn px-2 md:px-4 py-2 md:py-3 bg-gradient-to-br from-white to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-lg md:rounded-xl font-bold text-gray-700 transition-all btn-bounce border-2 border-gray-200 text-sm md:text-base';
+        btn.textContent = time;
+        btn.dataset.time = time;
+        if (time === 60) {
+          btn.classList.add('selected');
+          gameState.selectedTime = 60;
+        }
+        btn.addEventListener('click', () => {
+          playSound('click');
+          vibrate(30);
+          document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          gameState.selectedTime = parseInt(btn.dataset.time);
+        });
+        container.appendChild(btn);
+      });
+    }
+
+    // Generate question
+    function generateQuestion() {
+      const divisors = gameState.selectedDivisors;
+      const divisor = divisors[Math.floor(Math.random() * divisors.length)];
+      const quotient = Math.floor(Math.random() * 12) + 1; // 1-12 only
+      const dividend = divisor * quotient;
+      
+      // Generate wrong answers that are close to correct answer
+      const answers = new Set([quotient]);
+      
+      // Add nearby numbers (within range 1-12)
+      for (let offset = 1; answers.size < 6; offset++) {
+        if (quotient - offset >= 1 && answers.size < 6) {
+          answers.add(quotient - offset);
+        }
+        if (quotient + offset <= 12 && answers.size < 6) {
+          answers.add(quotient + offset);
+        }
+        // If we've exhausted nearby numbers, add random ones
+        if (offset > 12 && answers.size < 6) {
+          const random = Math.floor(Math.random() * 12) + 1;
+          answers.add(random);
+        }
+      }
+      
+      const shuffledAnswers = Array.from(answers).sort(() => Math.random() - 0.5);
+      
+      gameState.currentQuestion = {
+        dividend,
+        divisor,
+        correctAnswer: quotient,
+        answers: shuffledAnswers
+      };
+      
+      return gameState.currentQuestion;
+    }
+
+    // Display question
+    function displayQuestion() {
+      const q = generateQuestion();
+      document.getElementById('dividend').textContent = q.dividend;
+      document.getElementById('divisor').textContent = q.divisor;
+      
+      const container = document.getElementById('answers-container');
+      container.innerHTML = '';
+      
+      q.answers.forEach(answer => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn py-3 md:py-4 lg:py-5 text-2xl md:text-3xl lg:text-4xl font-extrabold rounded-xl md:rounded-2xl btn-bounce';
+        btn.style.background = 'linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6)';
+        btn.style.color = '#000000';
+        btn.textContent = answer;
+        btn.addEventListener('click', () => checkAnswer(answer, btn));
+        container.appendChild(btn);
+      });
+    }
+
+    // Check answer
+    function checkAnswer(answer, btn) {
+      const correct = answer === gameState.currentQuestion.correctAnswer;
+      
+      gameState.totalAnswered++;
+      document.getElementById('total-answered').textContent = gameState.totalAnswered;
+      
+      gameState.history.push({
+        question: `${gameState.currentQuestion.dividend} ÷ ${gameState.currentQuestion.divisor}`,
+        userAnswer: answer,
+        correctAnswer: gameState.currentQuestion.correctAnswer,
+        isCorrect: correct
+      });
+      
+      if (correct) {
+        gameState.correctCount++;
+        document.getElementById('correct-count').textContent = gameState.correctCount;
+        playSound('correct');
+        vibrate(100);
+        btn.style.background = 'linear-gradient(135deg, #4ade80, #22c55e)';
+        btn.style.boxShadow = '0 8px 0 rgba(34, 197, 94, 0.4)';
+        document.getElementById('question-container').classList.add('correct-flash');
+      } else {
+        gameState.wrongCount++;
+        document.getElementById('wrong-count').textContent = gameState.wrongCount;
+        playSound('wrong');
+        vibrate([100, 50, 100]);
+        btn.style.background = 'linear-gradient(135deg, #f87171, #ef4444)';
+        btn.style.boxShadow = '0 8px 0 rgba(239, 68, 68, 0.4)';
+        document.getElementById('question-container').classList.add('shake', 'wrong-flash');
+      }
+      
+      // Disable all buttons temporarily
+      document.querySelectorAll('.answer-btn').forEach(b => b.disabled = true);
+      
+      setTimeout(() => {
+        document.getElementById('question-container').classList.remove('correct-flash', 'wrong-flash', 'shake');
+        displayQuestion();
+      }, 300);
+    }
+
+    // Start game
+    function startGame() {
+      gameState.fullname = document.getElementById('fullname').value.trim();
+      gameState.classroom = document.getElementById('classroom').value.trim();
+      gameState.number = document.getElementById('number').value.trim();
+      
+      // Clear previous shake animations
+      document.getElementById('fullname').classList.remove('shake-input');
+      document.getElementById('classroom').classList.remove('shake-input');
+      document.getElementById('number').classList.remove('shake-input');
+      document.getElementById('difficulty-container').classList.remove('shake');
+      
+      // Validation
+      let hasError = false;
+      
+      if (!gameState.fullname) {
+        document.getElementById('fullname').classList.add('shake-input');
+        hasError = true;
+      }
+      if (!gameState.classroom) {
+        document.getElementById('classroom').classList.add('shake-input');
+        hasError = true;
+      }
+      if (!gameState.number) {
+        document.getElementById('number').classList.add('shake-input');
+        hasError = true;
+      }
+      if (gameState.selectedDivisors.length === 0) {
+        document.getElementById('difficulty-container').classList.add('shake');
+        hasError = true;
+      }
+      
+      if (hasError) {
+        document.getElementById('error-message').classList.remove('hidden');
+        document.getElementById('error-message').textContent = 'กรุณากรอกข้อมูลให้ครบถ้วนและเลือกระดับความยากอย่างน้อย 1 ข้อ';
+        playSound('wrong');
+        vibrate([100, 50, 100, 50, 100]);
+        
+        // Remove shake class after animation
+        setTimeout(() => {
+          document.getElementById('fullname').classList.remove('shake-input');
+          document.getElementById('classroom').classList.remove('shake-input');
+          document.getElementById('number').classList.remove('shake-input');
+          document.getElementById('difficulty-container').classList.remove('shake');
+        }, 500);
+        
+        return;
+      }
+      
+      document.getElementById('error-message').classList.add('hidden');
+      
+      // Reset game state
+      gameState.timeLeft = gameState.selectedTime;
+      gameState.totalAnswered = 0;
+      gameState.correctCount = 0;
+      gameState.wrongCount = 0;
+      gameState.history = [];
+      
+      // Update display
+      document.getElementById('display-name').textContent = gameState.fullname;
+      document.getElementById('display-class').textContent = gameState.classroom;
+      document.getElementById('display-number').textContent = gameState.number;
+      document.getElementById('display-difficulty').textContent = gameState.selectedDivisors.sort((a,b) => a-b).map(d => `÷${d}`).join(', ');
+      document.getElementById('display-time').textContent = gameState.selectedTime;
+      
+      document.getElementById('total-answered').textContent = '0';
+      document.getElementById('correct-count').textContent = '0';
+      document.getElementById('wrong-count').textContent = '0';
+      document.getElementById('time-left').textContent = gameState.timeLeft;
+      document.getElementById('time-bar').style.width = '100%';
+      
+      // Show game page
+      showPage('game');
+      displayQuestion();
+      startTimer();
+      playSound('click');
+    }
+
+    // Start timer
+    function startTimer() {
+      const startTime = gameState.selectedTime;
+      let hasPlayedWarning = false;
+      let tickInterval = null;
+      
+      gameState.timer = setInterval(() => {
+        gameState.timeLeft--;
+        document.getElementById('time-left').textContent = gameState.timeLeft;
+        
+        const percentage = (gameState.timeLeft / startTime) * 100;
+        document.getElementById('time-bar').style.width = percentage + '%';
+        
+        // Change color based on time
+        const timeBar = document.getElementById('time-bar');
+        const timeBarContainer = timeBar.parentElement;
+        
+        if (gameState.timeLeft <= 12) {
+          // Critical time: red color and shake
+          timeBar.className = 'h-full bg-gradient-to-r from-red-500 to-red-700 progress-bar rounded-full shake-timebar';
+          timeBarContainer.classList.add('shake-timebar');
+          
+          // Play warning sound once when hitting 12 seconds
+          if (gameState.timeLeft === 12 && !hasPlayedWarning) {
+            playSound('warning');
+            vibrate([200, 100, 200]);
+            hasPlayedWarning = true;
+            
+            // Start clock ticking sound every second
+            tickInterval = setInterval(() => {
+              if (gameState.timeLeft > 0) {
+                playClockTick();
+              } else {
+                clearInterval(tickInterval);
+              }
+            }, 1000);
+          }
+        } else if (percentage > 50) {
+          timeBar.className = 'h-full bg-gradient-to-r from-green-400 to-emerald-500 progress-bar rounded-full';
+          timeBarContainer.classList.remove('shake-timebar');
+        } else if (percentage > 25) {
+          timeBar.className = 'h-full bg-gradient-to-r from-yellow-400 to-orange-500 progress-bar rounded-full';
+          timeBarContainer.classList.remove('shake-timebar');
+        } else {
+          timeBar.className = 'h-full bg-gradient-to-r from-red-400 to-red-600 progress-bar rounded-full';
+          timeBarContainer.classList.remove('shake-timebar');
+        }
+        
+        if (gameState.timeLeft <= 0) {
+          if (tickInterval) clearInterval(tickInterval);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    // End game
+    function endGame() {
+      clearInterval(gameState.timer);
+      playSound('end');
+      vibrate([200, 100, 200]);
+      showResults();
+    }
+
+    // Show results
+    function showResults() {
+      // Format Thai date
+      const now = new Date();
+      const thaiMonths = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
+                          'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+      const day = now.getDate();
+      const month = thaiMonths[now.getMonth()];
+      const year = now.getFullYear() + 543; // Convert to Buddhist year
+      const thaiDate = `${day} ${month} ${year}`;
+      
+      document.getElementById('result-date').textContent = thaiDate;
+      document.getElementById('result-name').textContent = gameState.fullname;
+      document.getElementById('result-class').textContent = gameState.classroom;
+      document.getElementById('result-number').textContent = gameState.number;
+      document.getElementById('result-difficulty').textContent = gameState.selectedDivisors.sort((a,b) => a-b).map(d => `÷${d}`).join(', ');
+      document.getElementById('result-time').textContent = gameState.selectedTime + ' วินาที';
+      document.getElementById('result-total').textContent = gameState.totalAnswered;
+      document.getElementById('result-correct').textContent = gameState.correctCount;
+      document.getElementById('result-wrong').textContent = gameState.wrongCount;
+      
+      const percentage = gameState.totalAnswered > 0 
+        ? Math.round((gameState.correctCount / gameState.totalAnswered) * 100) 
+        : 0;
+      document.getElementById('result-percentage').textContent = percentage + '%';
+      
+      displayHistory('all');
+      showPage('result');
+      
+      // Confetti effect for good scores
+      if (percentage >= 70) {
+        createConfetti();
+      }
+    }
+
+    // Display history
+    function displayHistory(filter) {
+      const tbody = document.getElementById('history-table');
+      tbody.innerHTML = '';
+      
+      let filteredHistory = gameState.history;
+      if (filter === 'correct') {
+        filteredHistory = gameState.history.filter(h => h.isCorrect);
+      } else if (filter === 'wrong') {
+        filteredHistory = gameState.history.filter(h => !h.isCorrect);
+      }
+      
+      filteredHistory.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = item.isCorrect ? 'bg-green-50' : 'bg-red-50';
+        tr.innerHTML = `
+          <td class="p-1.5 md:p-2">${index + 1}</td>
+          <td class="p-1.5 md:p-2">${item.question} = ${item.correctAnswer}</td>
+          <td class="p-1.5 md:p-2 text-center font-bold">${item.userAnswer}</td>
+          <td class="p-1.5 md:p-2 text-center">${item.isCorrect ? '<span class="text-green-600 text-lg md:text-xl">✓</span>' : '<span class="text-red-600 text-lg md:text-xl">✗</span>'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      // Update filter buttons
+      document.getElementById('filter-all').className = filter === 'all' 
+        ? 'px-2 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce'
+        : 'px-2 md:px-4 py-1.5 md:py-2 bg-gray-200 text-gray-700 rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce hover:bg-gray-300';
+      document.getElementById('filter-correct').className = filter === 'correct'
+        ? 'px-2 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce'
+        : 'px-2 md:px-4 py-1.5 md:py-2 bg-gray-200 text-gray-700 rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce hover:bg-gray-300';
+      document.getElementById('filter-wrong').className = filter === 'wrong'
+        ? 'px-2 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce'
+        : 'px-2 md:px-4 py-1.5 md:py-2 bg-gray-200 text-gray-700 rounded-lg md:rounded-xl text-xs md:text-sm font-bold btn-bounce hover:bg-gray-300';
+    }
+
+    // Create confetti
+    function createConfetti() {
+      const colors = ['#667eea', '#764ba2', '#f093fb', '#10b981', '#f59e0b', '#ef4444'];
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + '%';
+          confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+          document.body.appendChild(confetti);
+          setTimeout(() => confetti.remove(), 3000);
+        }, i * 50);
+      }
+    }
+
+    // Show page
+    function showPage(page) {
+      document.getElementById('page-home').classList.add('hidden');
+      document.getElementById('page-game').classList.add('hidden');
+      document.getElementById('page-result').classList.add('hidden');
+      document.getElementById('page-' + page).classList.remove('hidden');
+    }
+
+    // Show cancel confirmation dialog
+    function showCancelConfirmation() {
+      // Create modal overlay
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full card-shadow animate-bounce-in">
+          <div class="text-center mb-4">
+            <div class="text-5xl mb-3">⚠️</div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">ยืนยันการยกเลิก</h3>
+            <p class="text-gray-600">คุณต้องการยกเลิกและกลับหน้าหลักหรือไม่?</p>
+            <p class="text-sm text-red-500 mt-2">⚠️ คะแนนที่ทำไว้จะไม่ถูกบันทึก</p>
+          </div>
+          <div class="flex gap-3">
+            <button id="confirm-cancel" class="flex-1 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all btn-bounce">
+              ✓ ยืนยัน
+            </button>
+            <button id="cancel-cancel" class="flex-1 py-3 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-all btn-bounce">
+              ✗ ยกเลิก
+            </button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      // Animate in
+      setTimeout(() => {
+        modal.style.animation = 'fadeIn 0.2s ease-out';
+      }, 10);
+      
+      // Confirm cancel
+      document.getElementById('confirm-cancel').addEventListener('click', () => {
+        clearInterval(gameState.timer);
+        playSound('click');
+        vibrate(50);
+        modal.remove();
+        showPage('home');
+      });
+      
+      // Cancel cancel (continue game)
+      document.getElementById('cancel-cancel').addEventListener('click', () => {
+        playSound('click');
+        vibrate(30);
+        modal.remove();
+      });
+      
+      // Click outside to cancel
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          playSound('click');
+          modal.remove();
+        }
+      });
+    }
+
+    // Event listeners
+    document.getElementById('start-btn').addEventListener('click', startGame);
+    
+    document.getElementById('random-all-btn').addEventListener('click', randomAllDivisors);
+    
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+      playSound('click');
+      showCancelConfirmation();
+    });
+    
+    document.getElementById('home-btn').addEventListener('click', () => {
+      playSound('click');
+      showPage('home');
+    });
+    
+    document.getElementById('filter-all').addEventListener('click', () => {
+      playSound('click');
+      displayHistory('all');
+    });
+    
+    document.getElementById('filter-correct').addEventListener('click', () => {
+      playSound('click');
+      displayHistory('correct');
+    });
+    
+    document.getElementById('filter-wrong').addEventListener('click', () => {
+      playSound('click');
+      displayHistory('wrong');
+    });
+
+    // Element SDK
+    async function onConfigChange(newConfig) {
+      config = { ...defaultConfig, ...newConfig };
+      document.getElementById('game-title').textContent = config.game_title || defaultConfig.game_title;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['game_title', config.game_title || defaultConfig.game_title]
+      ]);
+    }
+
+    // Initialize
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    initDifficultyButtons();
+    initTimeButtons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bb3eeb1821a87e2',t:'MTc2Nzk2MTY4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
